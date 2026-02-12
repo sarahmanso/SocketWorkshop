@@ -4,6 +4,7 @@ from src.models.user_model import User
 from src.models.order_model import Order
 from src.schemas.order_schema import OrderCreate
 from typing import List
+from fastapi import HTTPException, status
 
 
 def create_order_service(
@@ -12,7 +13,6 @@ def create_order_service(
     current_user: User
 ) -> Order:
     
-    # Create Order
     new_order = Order(
         name=order_data.name,
         description=order_data.description,
@@ -24,7 +24,6 @@ def create_order_service(
     db.commit()
     db.refresh(new_order)
 
-    # Create Order Activity
     activity = OrderActivity(
         order_id=new_order.id,
         user_id=current_user.id
@@ -52,3 +51,19 @@ def get_user_orders_service(
     )
 
     return orders
+
+
+
+def approve_order_service(db: Session, order_id: int) -> Order:
+    order = db.query(Order).filter(Order.id == order_id).first()
+    if not order:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Order with id {order_id} not found"
+        )
+    
+    order.is_approved = True
+    db.commit()
+    db.refresh(order)
+    
+    return order

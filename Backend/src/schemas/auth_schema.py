@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 from typing import Optional
 
-from Backend.src.schemas.user_schema import UserRole
+from src.schemas.user_schema import UserRole
 
 class UserLogin(BaseModel):
     username: str

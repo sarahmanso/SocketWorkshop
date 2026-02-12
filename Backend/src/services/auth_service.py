@@ -2,9 +2,10 @@ from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
 from fastapi import HTTPException, status
 
-from models import User
-from schemas import UserCreate, UserLogin, Token, UserResponse
-from utils.auth_utils import verify_password, get_password_hash, create_access_token
+from ..models.user_model import User
+from ..schemas.auth_schema import  UserLogin, Token
+from ..schemas.user_schema import UserCreate, UserResponse
+from ..utils.auth_utils import verify_password, get_password_hash, create_access_token
 from datetime import timedelta
 import os
 

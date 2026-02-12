@@ -1,11 +1,24 @@
 from fastapi import FastAPI, Depends
 from sqlalchemy.orm import Session
-from database import get_db, engine
+from database import get_db
 from sqlalchemy import text
+from fastapi.middleware.cors import CORSMiddleware
+
 from src.routes.order_route import router as order_router
 from src.routes.auth_route import router as auth_router
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:3000",
+        "http://localhost:5173",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/health")
 def health_check():

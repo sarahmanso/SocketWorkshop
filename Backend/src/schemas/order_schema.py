@@ -10,7 +10,7 @@ class OrderBase(BaseModel):
     description: Optional[str] = None
 
 class OrderCreate(OrderBase):
-    user_id: int = Field(..., gt=0)
+    pass
 
 class OrderUpdate(BaseModel):
     name: Optional[str] = Field(None, min_length=1, max_length=150)

@@ -1,11 +1,11 @@
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
-from ..services import create_order_service, get_user_orders_service
+from ..services.order_service import create_order_service, get_user_orders_service
 from typing import List
 from ..utils.auth_utils import get_current_user
 from database import get_db
-from schemas.order_schema import OrderCreate, OrderResponse
-from models import User
+from src.schemas.order_schema import OrderCreate, OrderResponse
+from src.models.user_model import User
 
 router = APIRouter(prefix="/orders", tags=["Orders"])
 

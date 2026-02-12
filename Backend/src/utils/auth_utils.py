@@ -6,11 +6,12 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.orm import Session
 from database import get_db
-from models import User
-from schemas import TokenData, UserRole
+from ..models.user_model import User
+from ..schemas.auth_schema import TokenData, UserRole
 import os
 from dotenv import load_dotenv
 
+# Load .env variables
 load_dotenv()
 
 SECRET_KEY = os.getenv("SECRET_KEY")
@@ -20,33 +21,50 @@ ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "30")
 if not SECRET_KEY:
     raise ValueError("SECRET_KEY not found in .env file")
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+# ✅ Use Argon2 instead of bcrypt to avoid 72-byte limit
+pwd_context = CryptContext(schemes=["argon2"], deprecated="auto")
 
+# HTTP Bearer auth
 security = HTTPBearer()
 
 
-def verify_password(plain_password: str, hashed_password: str) -> bool:
-    return pwd_context.verify(plain_password, hashed_password)
-
-
+# ----------------------
+# Password Functions
+# ----------------------
 def get_password_hash(password: str) -> str:
+    """
+    Hash password safely with Argon2
+    """
     return pwd_context.hash(password)
 
 
+def verify_password(plain_password: str, hashed_password: str) -> bool:
+    """
+    Verify password using Argon2
+    """
+    return pwd_context.verify(plain_password, hashed_password)
+
+
+# ----------------------
+# JWT Functions
+# ----------------------
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None) -> str:
+    """
+    Create a JWT token with expiration
+    """
     to_encode = data.copy()
     
-    if expires_delta:
-        expire = datetime.utcnow() + expires_delta
-    else:
-        expire = datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    
+    expire = datetime.utcnow() + (expires_delta or timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES))
     to_encode.update({"exp": expire})
+    
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
 
 
 def decode_access_token(token: str) -> TokenData:
+    """
+    Decode JWT token, return TokenData
+    """
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         username: str = payload.get("sub")
@@ -58,7 +76,6 @@ def decode_access_token(token: str) -> TokenData:
                 detail="Could not validate credentials",
                 headers={"WWW-Authenticate": "Bearer"},
             )
-        
         return TokenData(username=username, role=role)
     
     except JWTError:
@@ -69,10 +86,16 @@ def decode_access_token(token: str) -> TokenData:
         )
 
 
+# ----------------------
+# User Dependency Functions
+# ----------------------
 def get_current_user(
     credentials: HTTPAuthorizationCredentials = Depends(security),
     db: Session = Depends(get_db)
 ) -> User:
+    """
+    Get current user from JWT token
+    """
     token = credentials.credentials
     token_data = decode_access_token(token)
     
@@ -89,6 +112,9 @@ def get_current_user(
 
 
 def get_current_active_admin(current_user: User = Depends(get_current_user)) -> User:
+    """
+    Ensure current user is admin
+    """
     if current_user.role != UserRole.ADMIN:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
@@ -98,6 +124,9 @@ def get_current_active_admin(current_user: User = Depends(get_current_user)) -> 
 
 
 def require_role(allowed_roles: list[UserRole]):
+    """
+    Generic role checker
+    """
     def role_checker(current_user: User = Depends(get_current_user)) -> User:
         if current_user.role not in allowed_roles:
             raise HTTPException(

@@ -1,6 +1,8 @@
 from sqlalchemy.orm import Session
-from models import Order, OrderActivity, User
-from schemas.order_schema import OrderCreate
+from src.models.order_activity_model import OrderActivity
+from src.models.user_model import User
+from src.models.order_model import Order
+from src.schemas.order_schema import OrderCreate
 from typing import List
 
 

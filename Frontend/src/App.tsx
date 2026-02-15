@@ -1,41 +1,31 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Login from './components/Pages/AuthArea/Login/Login';
+import authService from './services/AuthService';
+import AddOrder from './components/Pages/Orders/AddOrder/AddOrder';
+import MyOrders from './components/Pages/Orders/MyOrders/MyOrders';
+import ProtectedRoute from './components/Pages/AuthArea/ProtectedRoute/ProtectedRoute';
+import PublicRoute from './components/Pages/AuthArea/PublicRoute/PublicRoute';
 import Header from './components/LayoutArea/Header/Header';
 import OrderActivity from './components/Pages/OrderActivity/OrderActivity';
-import authService from './services/AuthService';
 import './App.css';
 
-const Rides: React.FC = () => {
+// Root redirect component with role-based logic
+const RootRedirect: React.FC = () => {
   if (!authService.isAuthenticated()) {
     return <Navigate to="/login" replace />;
   }
 
-  return (
-    <div className="page-content">
-      <div className="content-container">
-        <h1>נסיעות</h1>
-        <p>ניהול נסיעות יופיע כאן</p>
-      </div>
-    </div>
-  );
-};
-
-const Vehicles: React.FC = () => {
-  if (!authService.isAuthenticated()) {
-    return <Navigate to="/login" replace />;
+  const user = authService.getCurrentUser();
+  
+  if (user?.role === 'admin') {
+    return <Navigate to="/activities" replace />;
+  } else {
+    return <Navigate to="/my-orders" replace />;
   }
-
-  return (
-    <div className="page-content">
-      <div className="content-container">
-        <h1>רכבים</h1>
-        <p>ניהול רכבים יופיע כאן</p>
-      </div>
-    </div>
-  );
 };
 
+// Layout wrapper component
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const location = useLocation();
   const isLoginPage = location.pathname === '/login';
@@ -47,7 +37,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   };
 
   return (
-    <div className="app-layout" dir="rtl">
+    <div className="app-layout" >
       {!isLoginPage && authService.isAuthenticated() && (
         <Header 
           userName={user?.username}
@@ -67,26 +57,50 @@ function App() {
     <Router>
       <Layout>
         <Routes>
-          {/* Login Page */}
-          <Route path="/login" element={<Login />} />
-
-          {/* Protected Routes */}
-          <Route path="/activities" element={<OrderActivity />} />
-          <Route path="/rides" element={<Rides />} />
-          <Route path="/vehicles" element={<Vehicles />} />
-
-          {/* Root - redirect based on auth */}
+          {/* Public Route - Login */}
           <Route
-            path="/"
+            path="/login"
             element={
-              authService.isAuthenticated() 
-                ? <Navigate to="/activities" replace />
-                : <Navigate to="/login" replace />
+              <PublicRoute>
+                <Login />
+              </PublicRoute>
             }
           />
 
-          {/* Catch all - redirect to login */}
-          <Route path="*" element={<Navigate to="/login" replace />} />
+          {/* Admin Routes */}
+          <Route
+            path="/activities"
+            element={
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <OrderActivity />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* User Routes */}
+          <Route
+            path="/add-order"
+            element={
+              <ProtectedRoute allowedRoles={["user"]}>
+                <AddOrder />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/my-orders"
+            element={
+              <ProtectedRoute allowedRoles={["user"]}>
+                <MyOrders />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Root - redirect based on auth and role */}
+          <Route path="/" element={<RootRedirect />} />
+
+          {/* Catch all - redirect to root */}
+          <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Layout>
     </Router>

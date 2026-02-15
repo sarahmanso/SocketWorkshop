@@ -19,7 +19,7 @@ const Header: React.FC<HeaderProps> = ({ userRole, userName, onLogout }) => {
                 <path d="M9 3v18" />
               </svg>
             </div>
-            <span className="logo-text">VehicleDesk</span>
+            <span className="logo-text">SockIt</span>
           </div>
         </div>
 
@@ -28,24 +28,25 @@ const Header: React.FC<HeaderProps> = ({ userRole, userName, onLogout }) => {
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
             </svg>
-            רישום פעילויות
+            Activities 
           </a>
-          <a href="/rides" className="nav-link">
+          <a href="/my-orders" className="nav-link">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M5 17H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-1" />
               <path d="M6 17a2 2 0 1 0 0 4 2 2 0 0 0 0-4z" />
-              <path d="M18 17a2 2 0 1 0 0 4 2 2 0 0 0 0-4z" />
+              <path d="M18 17a2 2 0 1 0 0 4 2 2.5" />
             </svg>
-            נסיעות
+            My Orders
           </a>
-          <a href="/vehicles" className="nav-link">
+          <a href="/add-order" className="nav-link">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M14 16H9m10 0h3v-3.15a1 1 0 0 0-.84-.99L16 11l-2.7-3.6a1 1 0 0 0-.8-.4H5.24a2 2 0 0 0-1.8 1.1l-.8 1.63A6 6 0 0 0 2 12.42V16h2" />
               <circle cx="6.5" cy="16.5" r="2.5" />
               <circle cx="16.5" cy="16.5" r="2.5" />
             </svg>
-            רכבים
+            Add Order
           </a>
+          
         </nav>
 
         <div className="header-right">

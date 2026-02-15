@@ -105,12 +105,7 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
             </div>
           </div>
 
-          <div className="form-options">
-            <label className="checkbox-wrapper">
-              <input type="checkbox" />
-              <span>Remember me</span>
-            </label>
-          </div>
+         
 
           <button 
             type="submit" 

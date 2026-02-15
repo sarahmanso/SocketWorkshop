@@ -13,7 +13,7 @@
 
 ---
 
-## 🗄️ Database
+##  Database
 
 המערכת מבוססת על PostgreSQL.
 

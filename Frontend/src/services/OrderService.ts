@@ -8,7 +8,7 @@ class OrderService {
     endpoint: string,
     options: RequestInit = {}
   ): Promise<T> {
-    const token = localStorage.getItem('auth_token'); 
+    const token = localStorage.getItem('auth_token');
     
     const response = await fetch(`${API_BASE_URL}${endpoint}`, {
       headers: {
@@ -35,6 +35,10 @@ class OrderService {
       method: 'POST',
       body: JSON.stringify(orderData),
     });
+  }
+
+  async getMyOrders(): Promise<OrderResponse[]> {
+    return this.makeRequest<OrderResponse[]>('/orders/my-orders');
   }
 }
 

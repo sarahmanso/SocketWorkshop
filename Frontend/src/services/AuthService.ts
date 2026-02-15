@@ -1,35 +1,9 @@
 import axios, { type AxiosInstance } from 'axios';
 import environment from '../config/environment';
+import type { LoginCredentials,AuthResponse,RegisterData,UserData,DecodedToken } from '../models/AuthModels';
 
 const API_BASE_URL = environment.apiUrl;
 
-interface LoginCredentials {
-  username: string;
-  password: string;
-}
-
-interface RegisterData {
-  username: string;
-  password: string;
-  role?: string;
-}
-
-interface AuthResponse {
-  access_token: string;
-  token_type: string;
-}
-
-interface UserData {
-  username: string;
-  role: string;
-}
-
-interface DecodedToken {
-  sub: string;
-  role: string;
-  exp: number;
-  iat?: number;
-}
 
 class AuthService {
   private api: AxiosInstance;

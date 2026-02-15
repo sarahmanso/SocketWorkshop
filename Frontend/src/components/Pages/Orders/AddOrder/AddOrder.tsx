@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import './AddOrder.css'
 import type { ApiError, OrderCreate } from '../../../../models/OrderModels';
 import { orderService } from '../../../../services/OrderService';
+import { useNavigate } from 'react-router-dom';
 
 interface AddOrderProps {
   onSuccess?: () => void;
@@ -10,6 +11,7 @@ interface AddOrderProps {
 }
 
 const AddOrder: React.FC<AddOrderProps> = ({ onSuccess, onCancel }) => {
+    const navigate = useNavigate();
   const [formData, setFormData] = useState<OrderCreate>({
     name: '',
     description: '',
@@ -61,6 +63,7 @@ const AddOrder: React.FC<AddOrderProps> = ({ onSuccess, onCancel }) => {
       await orderService.createOrder(formData);
       setSuccess(true);
       setFormData({ name: '', description: '' });
+      navigate('/my-orders');
       
       setTimeout(() => {
         onSuccess?.();
@@ -89,7 +92,6 @@ const AddOrder: React.FC<AddOrderProps> = ({ onSuccess, onCancel }) => {
 
   return (
     <div className="add-order-container">
-      {/* Animated Background */}
       <div className="add-order-background">
         <div className="shape shape-1"></div>
         <div className="shape shape-2"></div>

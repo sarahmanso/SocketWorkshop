@@ -39,7 +39,6 @@ class UserWithOrders(UserResponse):
     orders: List["OrderResponse"] = []
 
 
-# 🔥 forward ref fix
 from src.schemas.order_schema import OrderResponse
 
 UserWithOrders.model_rebuild()

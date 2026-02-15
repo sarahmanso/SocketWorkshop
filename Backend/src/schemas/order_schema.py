@@ -47,7 +47,6 @@ class OrderDetailed(OrderResponse):
     activities: List["OrderActivityResponse"] = []
 
 
-# 🔥 forward ref fix
 from src.schemas.user_schema import UserResponse
 from src.schemas.order_activity_schema import OrderActivityResponse
 

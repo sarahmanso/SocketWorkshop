@@ -7,8 +7,8 @@ import MyOrders from './components/Pages/Orders/MyOrders/MyOrders';
 import ProtectedRoute from './components/Pages/AuthArea/ProtectedRoute/ProtectedRoute';
 import PublicRoute from './components/Pages/AuthArea/PublicRoute/PublicRoute';
 import Header from './components/LayoutArea/Header/Header';
-import OrderActivity from './components/Pages/OrderActivity/OrderActivity';
 import './App.css';
+import OrderActivity from './components/Pages/OrderActivity/OrderActivity';
 
 // Root redirect component with role-based logic
 const RootRedirect: React.FC = () => {
@@ -40,7 +40,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     <div className="app-layout" >
       {!isLoginPage && authService.isAuthenticated() && (
         <Header 
-          userName={user?.username}
+          userName={user?.sub}
           userRole={user?.role}
           onLogout={handleLogout}
         />

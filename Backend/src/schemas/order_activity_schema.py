@@ -31,7 +31,6 @@ class OrderActivityWithDetails(OrderActivityResponse):
     user: "UserResponse"
 
 
-# 🔥 important for forward refs
 from src.schemas.order_schema import OrderResponse
 from src.schemas.user_schema import UserResponse
 

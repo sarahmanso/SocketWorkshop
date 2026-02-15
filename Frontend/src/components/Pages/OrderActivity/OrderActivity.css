@@ -194,6 +194,98 @@
   margin: 0;
 }
 
+/* Status Badge Styles */
+.status-cell {
+  text-align: center;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.status-badge svg {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+}
+
+.status-badge.approved {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.status-badge.pending {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+/* Action Button Styles */
+.action-cell {
+  text-align: center;
+  padding: 8px;
+  width: 80px;
+}
+
+button.approve-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  min-height: 36px;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  margin: 0;
+  background: #10b981;
+  color: #ffffff;
+  border: 1px solid #10b981;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  outline: none;
+}
+
+button.approve-button:hover:not(:disabled) {
+  background: #059669;
+  border-color: #059669;
+  transform: scale(1.05);
+}
+
+button.approve-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: #10b981;
+}
+
+button.approve-button svg {
+  width: 18px;
+  height: 18px;
+  fill: white;
+}
+
+.spinner-small {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+.approved-icon {
+  color: #10b981;
+  font-size: 20px;
+  font-weight: bold;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .page-header {

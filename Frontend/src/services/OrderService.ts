@@ -40,6 +40,12 @@ class OrderService {
   async getMyOrders(): Promise<OrderResponse[]> {
     return this.makeRequest<OrderResponse[]>('/orders/my-orders');
   }
+
+  async approveOrder(orderId: number): Promise<OrderResponse> {
+    return this.makeRequest<OrderResponse>(`/orders/${orderId}/approve`, {
+      method: 'PATCH',
+    });
+  }
 }
 
 export const orderService = new OrderService();

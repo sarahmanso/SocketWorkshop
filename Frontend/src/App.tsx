@@ -9,6 +9,7 @@ import PublicRoute from './components/Pages/AuthArea/PublicRoute/PublicRoute';
 import Header from './components/LayoutArea/Header/Header';
 import './App.css';
 import OrderActivity from './components/Pages/OrderActivity/OrderActivity';
+import Register from './components/Pages/AuthArea/Register/Register';
 
 // Root redirect component with role-based logic
 const RootRedirect: React.FC = () => {
@@ -63,6 +64,14 @@ function App() {
             element={
               <PublicRoute>
                 <Login />
+              </PublicRoute>
+            }
+          />
+                    <Route
+            path="/Register"
+            element={
+              <PublicRoute>
+                <Register />
               </PublicRoute>
             }
           />

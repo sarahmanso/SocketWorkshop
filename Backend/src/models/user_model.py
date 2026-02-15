@@ -14,7 +14,6 @@ class User(Base):
         CheckConstraint("role IN ('admin', 'user')", name='check_user_role'),
     )
     
-    # relationships
     orders = relationship("Order", back_populates="user", cascade="all, delete-orphan")
     activities = relationship("OrderActivity", back_populates="user", cascade="all, delete-orphan")
     

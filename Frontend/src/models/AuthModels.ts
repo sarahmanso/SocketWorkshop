@@ -15,7 +15,7 @@ export interface AuthResponse {
 }
 
 export interface UserData {
-  username: string;
+  sub: string;
   role: string;
 }
 

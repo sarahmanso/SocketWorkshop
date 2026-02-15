@@ -11,7 +11,6 @@ class OrderActivity(Base):
     user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
     activity_time = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     
-    # relationships
     order = relationship("Order", back_populates="activities")
     user = relationship("User", back_populates="activities")
     

@@ -3,32 +3,13 @@ import { Navigate } from 'react-router-dom';
 import authService from '../../../services/AuthService';
 import orderActivityService from '../../../services/OrderActivityService';
 import './OrderActivity.css';
+import type { OrderActivityModel } from '../../../models/OrderActivityModels';
 
-interface User {
-  id: number;
-  username: string;
-  role: string;
-}
 
-interface Order {
-  id: number;
-  name: string;
-  description?: string;
-  is_approved: boolean;
-  created_at: string;
-}
 
-interface OrderActivity {
-  id: number;
-  user_id: number;
-  order_id: number;
-  activity_time: string;
-  user: User;
-  order: Order;
-}
 
 const OrderActivity: React.FC = () => {
-  const [activities, setActivities] = useState<OrderActivity[]>([]);
+  const [activities, setActivities] = useState<OrderActivityModel[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -42,7 +23,7 @@ const OrderActivity: React.FC = () => {
       const data = await orderActivityService.getAllActivities();
       setActivities(data);
     } catch (err) {
-      setError('שגיאה בטעינת פעילויות');
+      setError('Error fetching activities');
       console.error('Error fetching activities:', err);
     } finally {
       setIsLoading(false);
@@ -70,14 +51,14 @@ const OrderActivity: React.FC = () => {
       <div className="content-container">
         <div className="page-header">
           <div className="header-content">
-            <h1>רישום פעילויות</h1>
-            <p className="page-description">היסטוריית פעולות והזמנות במערכת</p>
+            <h1>Order Activity</h1>
+            <p className="page-description">Historical activities and orders in the system</p>
           </div>
           <button onClick={fetchActivities} className="refresh-button">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2" />
             </svg>
-            רענן
+            Refresh
           </button>
         </div>
 
@@ -93,18 +74,18 @@ const OrderActivity: React.FC = () => {
         {isLoading ? (
           <div className="loading-state">
             <div className="spinner-large"></div>
-            <p>טוען פעילויות...</p>
+            <p>Loading activities...</p>
           </div>
         ) : (
           <div className="table-container">
             <table className="activity-table">
               <thead>
                 <tr>
-                  <th>מזהה משתמש</th>
-                  <th>שם משתמש</th>
-                  <th>מזהה הזמנה</th>
-                  <th>שם הזמנה</th>
-                  <th>זמן פעילות</th>
+                  <th>User ID</th>
+                  <th>Username</th>
+                  <th>Order ID</th>
+                  <th>Order Name</th>
+                  <th>Activity Time</th>
                 </tr>
               </thead>
               <tbody>
@@ -114,7 +95,7 @@ const OrderActivity: React.FC = () => {
                       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                       </svg>
-                      <p>אין פעילויות להצגה</p>
+                      <p>No activities to display</p>
                     </td>
                   </tr>
                 ) : (
@@ -136,7 +117,7 @@ const OrderActivity: React.FC = () => {
         {activities.length > 0 && (
           <div className="table-footer">
             <p className="result-count">
-              סך הכל: {activities.length} פעילויות
+              Total: {activities.length} activities
             </p>
           </div>
         )}

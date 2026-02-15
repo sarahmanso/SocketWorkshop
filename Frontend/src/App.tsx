@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './components/Pages/AuthArea/Login/Login';
 import authService from './services/AuthService';
+import AddOrder from './components/Pages/Orders/AddOrder/AddOrder';
 
 const Dashboard: React.FC = () => {
   const user = authService.getCurrentUser();
@@ -34,6 +35,8 @@ function App() {
 
         {/* Dashboard - checks auth inside component */}
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/add-order" element={<AddOrder />} />
+
 
         {/* Root - redirect based on auth */}
         <Route

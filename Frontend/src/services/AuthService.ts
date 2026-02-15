@@ -94,8 +94,9 @@ class AuthService {
     if (!userData) return false;
 
     const currentTime = Date.now() / 1000;
-    return userData.exp > currentTime;
-  }
+    const isValid = userData.exp > currentTime;    
+    return isValid;
+}
 
   getCurrentUser(): UserData | null {
     const userStr = localStorage.getItem(environment.userKey);

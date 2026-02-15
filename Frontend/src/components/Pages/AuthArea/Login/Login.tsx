@@ -25,7 +25,7 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
       if (onLoginSuccess) {
         onLoginSuccess();
       } else {
-        navigate('/dashboard');
+        navigate('/activities');
       }
     } catch (err) {
       if (err instanceof Error) {
@@ -105,12 +105,7 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
             </div>
           </div>
 
-          <div className="form-options">
-            <label className="checkbox-wrapper">
-              <input type="checkbox" />
-              <span>Remember me</span>
-            </label>
-          </div>
+         
 
           <button 
             type="submit" 

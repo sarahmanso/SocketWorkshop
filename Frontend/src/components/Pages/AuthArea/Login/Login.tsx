@@ -25,7 +25,7 @@ const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
       if (onLoginSuccess) {
         onLoginSuccess();
       } else {
-        navigate('/dashboard');
+        navigate('/activities');
       }
     } catch (err) {
       if (err instanceof Error) {
